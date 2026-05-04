@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:travel_app/app_routes.dart';
-import 'package:travel_app/bottom_navigation.dart';
+import 'package:travel_app/constants/app_routes.dart';
+import 'package:travel_app/constants/app_theme.dart';
+import 'package:travel_app/screens/bottom_navigation.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -23,9 +24,9 @@ class _LoginPageState extends State<LoginPage> {
         child: Column(
           children: [
             SizedBox(height: 80),
-            Text("My Travel App",
+            Text("Travel Seamlessly",
               style: TextStyle(
-                color: Color(0xff0923b5),
+                color: AppColors.indigo,
                 fontSize: 28,
                 fontWeight: FontWeight.w800,
               ),
@@ -107,7 +108,7 @@ class _LoginPageState extends State<LoginPage> {
                         }
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Color(0xff0923b5),
+                        backgroundColor: AppColors.indigo,
                         minimumSize: Size(double.infinity, 56),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
@@ -184,7 +185,7 @@ class _LoginPageState extends State<LoginPage> {
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
-                              color: Color(0xff0923b5),
+                              color: AppColors.indigo,
                             ),
                           ),
                         ),

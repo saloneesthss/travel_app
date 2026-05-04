@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:travel_app/app_routes.dart';
+import 'package:travel_app/constants/app_routes.dart';
+import 'package:travel_app/constants/app_theme.dart';
 
 void main() {
   runApp(const MyApp());
@@ -12,7 +13,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       routes: AppRoutes.getAppRoutes(),
-      initialRoute: AppRoutes.login,
+      initialRoute: AppRoutes.splash,
+      theme: AppTheme.theme,
     );
   }
 }

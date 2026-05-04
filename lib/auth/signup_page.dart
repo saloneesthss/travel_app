@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:travel_app/app_routes.dart';
-import 'package:travel_app/bottom_navigation.dart';
+import 'package:travel_app/constants/app_routes.dart';
+import 'package:travel_app/constants/app_theme.dart';
+import 'package:travel_app/screens/bottom_navigation.dart';
 
 class SignupPage extends StatefulWidget {
   const SignupPage({super.key});
@@ -24,11 +25,11 @@ class _SignupPageState extends State<SignupPage> {
         child: Column(
           children: [
             SizedBox(height: 80),
-            Text("My Travel App",
+            Text("Travel Seamlessly",
               style: TextStyle(
                 fontSize: 28,
                 fontWeight: FontWeight.w800,
-                color: Color(0xff0923b5),
+                color: AppColors.indigo,
               ),
             ),
             SizedBox(height: 40),
@@ -137,7 +138,7 @@ class _SignupPageState extends State<SignupPage> {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
-                        backgroundColor: Color(0xff0923b5),
+                        backgroundColor: AppColors.indigo,
                       ),
                       child: Text("Sign up",
                         style: TextStyle(
@@ -202,7 +203,7 @@ class _SignupPageState extends State<SignupPage> {
                           onTap: () {
                             Navigator.pushNamed(context, AppRoutes.login);
                           },
-                          child: Text("Login", style: TextStyle(fontSize: 16, color: Color(0xff0923b5), fontWeight: FontWeight.bold)),
+                          child: Text("Login", style: TextStyle(fontSize: 16, color: AppColors.indigo, fontWeight: FontWeight.bold)),
                         ),
                       ],
                     ),
