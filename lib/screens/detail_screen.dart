@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:travel_app/constants/app_theme.dart';
+import 'package:travel_app/database/favorites_service.dart';
 import 'package:travel_app/models/destination.dart';
 
 class DetailScreen extends StatefulWidget {
@@ -20,7 +21,23 @@ class _DetailScreenState extends State<DetailScreen> {
   @override
   void initState() {
     super.initState();
-    _isFavorite = widget.destination.isFavorite;
+    _isFavorite = FavoritesService.instance.isFavorite(widget.destination.id) || widget.destination.isFavorite;
+    FavoritesService.instance.addListener(_onFavoritesChanged);
+  }
+
+  @override
+  void dispose() {
+    FavoritesService.instance.removeListener(_onFavoritesChanged);
+    super.dispose();
+  }
+
+  void _onFavoritesChanged() {
+    final val = FavoritesService.instance.isFavorite(widget.destination.id);
+    if (!mounted) return;
+    setState(() {
+      _isFavorite = val;
+      widget.destination.isFavorite = val;
+    });
   }
 
   @override
@@ -88,8 +105,14 @@ class _DetailScreenState extends State<DetailScreen> {
                       Row(
                         children: [
                           GestureDetector(
-                            onTap: () =>
-                                setState(() => _isFavorite = !_isFavorite),
+                            onTap: () async {
+                              final isFav = await FavoritesService.instance.toggleFavorite(widget.destination.id);
+                              if (!mounted) return;
+                              setState(() {
+                                _isFavorite = isFav;
+                                widget.destination.isFavorite = isFav;
+                              });
+                            },
                             child: Container(
                               width: 38,
                               height: 38,
@@ -358,6 +381,20 @@ class _DetailScreenState extends State<DetailScreen> {
                           ),
                         ),
                       );
+                      Future.delayed(const Duration(milliseconds: 4000), () {
+                        if (mounted) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(' ✓ Booked '),
+                                backgroundColor: AppColors.indigo,
+                                behavior: SnackBarBehavior.floating,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                              ),
+                          );
+                        }
+                      });
                     },
                     child: Container(
                       padding: const EdgeInsets.symmetric(
@@ -423,40 +460,42 @@ class _HighlightCard extends StatelessWidget {
           ),
         ],
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Container(
-            width: 36,
-            height: 36,
-            decoration: BoxDecoration(
-              color: AppColors.indigoPale,
-              borderRadius: BorderRadius.circular(10),
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              width: 36,
+              height: 36,
+              decoration: BoxDecoration(
+                color: AppColors.indigoPale,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Icon(
+                _icons[index % _icons.length],
+                color: AppColors.indigo,
+                size: 18,
+              ),
             ),
-            child: Icon(
-              _icons[index % _icons.length],
-              color: AppColors.indigo,
-              size: 18,
+            const SizedBox(height: 10),
+            const Text(
+              'Top location:',
+              style: TextStyle(fontSize: 11, color: AppColors.muted),
             ),
-          ),
-          const SizedBox(height: 10),
-          const Text(
-            'Top location:',
-            style: TextStyle(fontSize: 11, color: AppColors.muted),
-          ),
-          const SizedBox(height: 4),
-          Text(
-            text,
-            style: const TextStyle(
-              fontSize: 13,
-              fontWeight: FontWeight.w600,
-              color: AppColors.text,
+            const SizedBox(height: 4),
+            Text(
+              text,
+              style: const TextStyle(
+                fontSize: 13,
+                fontWeight: FontWeight.w600,
+                color: AppColors.text,
+              ),
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
             ),
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

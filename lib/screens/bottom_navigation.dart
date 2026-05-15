@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:travel_app/constants/app_theme.dart';
 import 'package:travel_app/screens/home_screen.dart';
 import 'package:travel_app/screens/my_profile.dart';
-import 'wishlist_screen.dart';
-import 'places_screen.dart';
+import 'package:travel_app/screens/wishlist_screen.dart';
+import 'package:travel_app/screens/places_screen.dart';
 
 class BottomNavigation extends StatefulWidget {
   const BottomNavigation({super.key});

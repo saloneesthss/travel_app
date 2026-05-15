@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:travel_app/constants/app_theme.dart';
+import 'package:travel_app/database/auth_service.dart';
 import 'package:travel_app/widgets/city_chip.dart';
 import 'package:travel_app/models/destination.dart';
 import 'package:travel_app/widgets/destination_card.dart';
@@ -13,8 +14,6 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final categories = ['All', 'Mountains', 'Beaches', 'Forests', 'Cities'];
-
     return Scaffold(
       backgroundColor: AppColors.background,
       body: SafeArea(
@@ -32,15 +31,15 @@ class HomeScreen extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Good morning 👋',
+                          'Hello, Welcome 👋',
                           style: TextStyle(
                             fontSize: 13,
                             color: AppColors.muted,
                           ),
                         ),
                         const SizedBox(height: 2),
-                        const Text(
-                          'Salonee Shrestha',
+                        Text(
+                          AuthService.instance.currentUserName ?? 'User',
                           style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.w700,
@@ -61,15 +60,14 @@ class HomeScreen extends StatelessWidget {
                         shape: BoxShape.circle,
                       ),
                       child: Center(
-                        // child: Text(
-                        //   'S',
-                        //   style: TextStyle(
-                        //     color: Colors.white,
-                        //     fontWeight: FontWeight.w700,
-                        //     fontSize: 18,
-                        //   ),
-                        // ),
-                        child: ClipOval(child: Image.asset("assets/images/profile.jpg")),
+                        child: Text(
+                          AuthService.instance.currentUserName?[0].toUpperCase() ?? 'U',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w700,
+                            fontSize: 18,
+                          ),
+                        ),
                       ),
                     ),
                   ],
@@ -151,12 +149,6 @@ class HomeScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 24),
-              // Padding(
-              //   padding: const EdgeInsets.fromLTRB(24, 0, 24, 16),
-              //   child: const SectionHeader(title: 'Trending Now'),
-              // ),
-              // _CategoryChips(categories: categories),
-              // const SizedBox(height: 24),
             ],
           ),
         ),

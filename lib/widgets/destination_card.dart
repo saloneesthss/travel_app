@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:travel_app/constants/app_theme.dart';
+import 'package:travel_app/database/favorites_service.dart';
 import 'package:travel_app/models/destination.dart';
 import 'package:travel_app/widgets/rating_badge.dart';
 
-class DestinationCardSmall extends StatelessWidget {
+class DestinationCardSmall extends StatefulWidget {
   final Destination destination;
   final VoidCallback onTap;
 
@@ -15,9 +16,14 @@ class DestinationCardSmall extends StatelessWidget {
   });
 
   @override
+  State<DestinationCardSmall> createState() => _DestinationCardSmallState();
+}
+
+class _DestinationCardSmallState extends State<DestinationCardSmall> {
+  @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onTap,
+      onTap: widget.onTap,
       child: Container(
         width: 220,
         decoration: BoxDecoration(
@@ -41,7 +47,7 @@ class DestinationCardSmall extends StatelessWidget {
                     top: Radius.circular(20),
                   ),
                   child: CachedNetworkImage(
-                    imageUrl: destination.imageUrl,
+                    imageUrl: widget.destination.imageUrl,
                     width: 220,
                     height: 140,
                     fit: BoxFit.cover,
@@ -55,19 +61,25 @@ class DestinationCardSmall extends StatelessWidget {
                 Positioned(
                   top: 10,
                   right: 10,
-                  child: Container(
-                    width: 34,
-                    height: 34,
-                    decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.9),
-                      shape: BoxShape.circle,
-                    ),
-                    child: Icon(
-                      destination.isFavorite
-                          ? Icons.favorite_rounded
-                          : Icons.favorite_border_rounded,
-                      color: AppColors.indigo,
-                      size: 16,
+                  child: GestureDetector(
+                    onTap: () async {
+                      await FavoritesService.instance.toggleFavorite(widget.destination.id);
+                      setState(() {});
+                    },
+                    child: Container(
+                      width: 34,
+                      height: 34,
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.9),
+                        shape: BoxShape.circle,
+                      ),
+                      child: Icon(
+                        FavoritesService.instance.isFavorite(widget.destination.id)
+                            ? Icons.favorite_rounded
+                            : Icons.favorite_border_rounded,
+                        color: AppColors.indigo,
+                        size: 16,
+                      ),
                     ),
                   ),
                 ),
@@ -79,7 +91,7 @@ class DestinationCardSmall extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    destination.name,
+                    widget.destination.name,
                     style: const TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w700,
@@ -90,7 +102,7 @@ class DestinationCardSmall extends StatelessWidget {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    destination.distance,
+                    widget.destination.distance,
                     style: const TextStyle(
                       fontSize: 12,
                       color: AppColors.muted,
@@ -111,7 +123,7 @@ class DestinationCardSmall extends StatelessWidget {
                               ),
                             ),
                             TextSpan(
-                              text: '\$${destination.startPrice.toInt()}',
+                              text: '\$${widget.destination.startPrice.toInt()}',
                               style: const TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w700,
@@ -121,7 +133,7 @@ class DestinationCardSmall extends StatelessWidget {
                           ],
                         ),
                       ),
-                      RatingBadge(rating: destination.rating),
+                      RatingBadge(rating: widget.destination.rating),
                     ],
                   ),
                 ],
@@ -189,11 +201,9 @@ class _DestinationCardLargeState extends State<DestinationCardLarge> {
                   top: 14,
                   right: 14,
                   child: GestureDetector(
-                    onTap: () => setState(
-                          () =>
-                      widget.destination.isFavorite =
-                      !widget.destination.isFavorite,
-                    ),
+                    onTap: () async {
+                      await FavoritesService.instance.toggleFavorite(widget.destination.id);
+                    },
                     child: Container(
                       width: 36,
                       height: 36,
@@ -202,7 +212,7 @@ class _DestinationCardLargeState extends State<DestinationCardLarge> {
                         shape: BoxShape.circle,
                       ),
                       child: Icon(
-                        widget.destination.isFavorite
+                        FavoritesService.instance.isFavorite(widget.destination.id)
                             ? Icons.favorite_rounded
                             : Icons.favorite_border_rounded,
                         color: AppColors.indigo,

@@ -28,6 +28,22 @@ class Destination {
     this.highlights = const [],
     this.isFavorite = false,
   });
+  factory Destination.fromMap(Map<String, dynamic> map) {
+    return Destination(
+      id:          map['id'] as String,
+      name:        map['name'] as String,
+      location:    map['location'] as String,
+      country:     map['country'] as String,
+      imageUrl:    map['imageUrl'] as String,
+      rating:      (map['rating'] as num).toDouble(),
+      reviewCount: map['reviewCount'] as int,
+      startPrice:  (map['startPrice'] as num).toDouble(),
+      distance:    map['distance'] as String,
+      description: map['description'] as String,
+      amenities:  (map['amenities'] as String).split(','),
+      highlights: (map['highlights'] as String).split(','),
+    );
+  }
 }
 
 class City {
@@ -98,7 +114,6 @@ final List<Destination> allDestinations = [
       'Lodges & campgrounds inside the park.',
       'Best time: Spring & Fall.',
     ],
-    isFavorite: true,
   ),
   Destination(
     id: '2',
@@ -126,7 +141,6 @@ final List<Destination> allDestinations = [
       'Yosemite Falls is one of the tallest in North America.',
       'Best visited May–September.',
     ],
-    isFavorite: false,
   ),
   Destination(
     id: '3',
@@ -152,7 +166,6 @@ final List<Destination> allDestinations = [
       'Best reached by the iconic Inca Trail.',
       'Sunrise from Sun Gate is unmissable.',
     ],
-    isFavorite: true,
   ),
   Destination(
     id: '4',
@@ -179,7 +192,6 @@ final List<Destination> allDestinations = [
       'The Narrows is a must-do slot canyon hike.',
       'Best time: Spring and Fall.',
     ],
-    isFavorite: false,
   ),
   Destination(
     id: '5',
@@ -206,7 +218,6 @@ final List<Destination> allDestinations = [
       'Volcanic beaches at Perissa.',
       'Best visited April–October.',
     ],
-    isFavorite: true,
   ),
   Destination(
     id: '6',
@@ -233,6 +244,5 @@ final List<Destination> allDestinations = [
       'Arashiyama bamboo grove is iconic.',
       'Cherry blossoms in March–April.',
     ],
-    isFavorite: true,
   ),
 ];

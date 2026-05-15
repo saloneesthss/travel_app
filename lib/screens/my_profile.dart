@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:travel_app/constants/app_routes.dart';
 import 'package:travel_app/constants/app_theme.dart';
+import 'package:travel_app/database/auth_service.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -103,15 +105,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               shape: BoxShape.circle,
                             ),
                             child: Center(
-                              // child: Text(
-                              //   'S',
-                              //   style: TextStyle(
-                              //     color: Colors.white,
-                              //     fontSize: 34,
-                              //     fontWeight: FontWeight.w700,
-                              //   ),
-                              // ),
-                              child: ClipOval(child: Image.asset("assets/images/profile.jpg")),
+                              child: Text(
+                                AuthService.instance.currentUserName?[0].toUpperCase() ?? 'U',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 34,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
                             ),
                           ),
                           Positioned(
@@ -135,8 +136,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                       const SizedBox(height: 12),
 
-                      const Text(
-                        'Salonee Shrestha',
+                      Text(
+                        AuthService.instance.currentUserName ?? 'User',
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.w700,
@@ -144,8 +145,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ),
                       ),
                       const SizedBox(height: 4),
-                      const Text(
-                        'salonee@gmail.com',
+                      Text(
+                        AuthService.instance.currentUserEmail ?? 'email@example.com',
                         style: TextStyle(
                           fontSize: 13,
                           color: AppColors.muted,
@@ -405,8 +406,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
         ),
         content: const Text(
-          'Travel Seamlessly.\n\nVersion 1.0.0\nBuilt with Flutter ❤️',
-          style: TextStyle(color: AppColors.muted),
+          'Travel Seamlessly.\n\nVersion 1.0.0\nBuilt with Flutter 💜',
+          style: TextStyle(color: AppColors.muted, fontSize: 15),
         ),
         actions: [
           TextButton(
@@ -443,7 +444,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
           ),
           TextButton(
-            onPressed: () => Navigator.pop(context),
+            onPressed: () => Navigator.pushNamedAndRemoveUntil(context, AppRoutes.login, (routes) => false),
             child: const Text(
               'Log Out',
               style: TextStyle(color: AppColors.red),
@@ -494,9 +495,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
             ),
             const SizedBox(height: 20),
-            _EditField(label: 'Full Name', value: 'Salonee Shrestha'),
+            _EditField(label: 'Full Name', value: AuthService.instance.currentUserName ?? 'User'),
             const SizedBox(height: 14),
-            _EditField(label: 'Email', value: 'salonee@gmail.com'),
+            _EditField(label: 'Email', value: AuthService.instance.currentUserEmail ?? 'email@example.com'),
             const SizedBox(height: 14),
             _EditField(label: 'Phone', value: '+977 9748000000'),
             const SizedBox(height: 24),

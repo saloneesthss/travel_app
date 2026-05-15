@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:travel_app/constants/app_theme.dart';
+import 'package:travel_app/database/favorites_service.dart';
 import 'package:travel_app/models/destination.dart';
 import 'detail_screen.dart';
 
@@ -13,7 +14,23 @@ class WishlistScreen extends StatefulWidget {
 
 class _WishlistScreenState extends State<WishlistScreen> {
   List<Destination> get _saved =>
-      allDestinations.where((d) => d.isFavorite).toList();
+      allDestinations.where((d) => FavoritesService.instance.isFavorite(d.id)).toList();
+
+  @override
+  void initState() {
+    super.initState();
+    FavoritesService.instance.addListener(_onFavoritesChanged);
+  }
+
+  @override
+  void dispose() {
+    FavoritesService.instance.removeListener(_onFavoritesChanged);
+    super.dispose();
+  }
+
+  void _onFavoritesChanged() {
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -104,10 +121,9 @@ class _WishlistScreenState extends State<WishlistScreen> {
                     );
                     setState(() {});
                   },
-                  onRemove: () {
-                    setState(() {
-                      _saved[index].isFavorite = false;
-                    });
+                  onRemove: () async {
+                    await FavoritesService.instance.removeFavorite(_saved[index].id);
+                    setState(() {});
                   },
                 ),
               ),
@@ -122,7 +138,7 @@ class _WishlistScreenState extends State<WishlistScreen> {
 class _WishCard extends StatelessWidget {
   final Destination destination;
   final VoidCallback onTap;
-  final VoidCallback onRemove;
+  final Future<void> Function() onRemove;
 
   const _WishCard({
     required this.destination,
@@ -188,7 +204,9 @@ class _WishCard extends StatelessWidget {
               top: 10,
               right: 10,
               child: GestureDetector(
-                onTap: onRemove,
+                onTap: () {
+                  onRemove();
+                },
                 child: Container(
                   width: 30,
                   height: 30,

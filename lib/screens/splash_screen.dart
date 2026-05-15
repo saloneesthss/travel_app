@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:travel_app/constants/app_routes.dart';
 import 'package:travel_app/constants/app_theme.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -37,12 +38,9 @@ class _SplashScreenState extends State<SplashScreen>
   }
 
   Future<void> _navigate() async {
-    // final isLoggedIn = await AuthService().isLoggedIn();
-    // if (!mounted) return;
-
     Navigator.pushReplacementNamed(
       context,
-      '/login',
+      AppRoutes.login,
     );
   }
 

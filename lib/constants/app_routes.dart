@@ -16,8 +16,8 @@ class AppRoutes {
   static getAppRoutes() => {
     homepage: (context) => const HomeScreen(),
     profile: (context) => const ProfileScreen(),
-    login: (context) => const LoginPage(),
-    signup: (context) => const SignupPage(),
+    login: (context) => const LoginScreen(),
+    signup: (context) => const SignupScreen(),
     splash: (context) => const SplashScreen(),
   };
 }

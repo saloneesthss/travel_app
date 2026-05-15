@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:travel_app/constants/app_routes.dart';
 import 'package:travel_app/models/destination.dart';
+import 'package:travel_app/screens/bottom_navigation.dart';
 import 'package:travel_app/widgets/destination_card.dart';
 import 'package:travel_app/screens/detail_screen.dart';
 import 'package:travel_app/widgets/search_widget.dart';
@@ -24,7 +24,9 @@ class PlacesScreen extends StatelessWidget {
                   _CircleButton(
                     icon: Icons.arrow_back_ios_new_rounded,
                     onTap: () {
-                      Navigator.pushNamed(context, AppRoutes.homepage);
+                      Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => BottomNavigation())
+                      );
                     },
                   ),
                   Expanded(
